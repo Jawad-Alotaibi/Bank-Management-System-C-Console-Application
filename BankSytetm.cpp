@@ -268,24 +268,30 @@ void printTotalBalancesDetails(vector<stClient> clients)
     cout << endl
          << "________________________________________________________________________________________" << endl;
 
-    for (stClient &client : clients)
-    {
-        printTotalBalanceRecord(client);
-        totalBalances += client.accountBalance;
-        cout << endl;
-    }
+        for (stClient &client : clients)
+        {
+            printTotalBalanceRecord(client);
+            totalBalances += client.accountBalance;
+            cout << endl;
+        }
 
-    cout << "\n\t\tTotal Balances = " << totalBalances << endl; 
+        cout << "\n\t\tTotal Balances = " << totalBalances << endl;
 }
 
 void printAllClients(vector<stClient> clients)
 {
+    
     printAllClientsHeader(clients.size());
     printClientsDetails(clients);
 }
 
 void printTotalBalancesClients(vector<stClient> clients)
 {
+    if (clients.size() == 0)
+    {
+        cout << "No Clients Available in the system" << endl;
+        return;
+    }
     printTotalBalancesHeader(clients.size());
     printTotalBalancesDetails(clients);
 }
@@ -478,7 +484,6 @@ void showClientsScreen()
     printAllClients(vClients);
 }
 
-
 void showTotalBalancesScreen()
 {
     vector<stClient> vClients = loadClientDataFromFile(FILENAME);
@@ -512,7 +517,7 @@ void showfindClientScreen()
     }
 }
 
-void deposit(double amount, string accountNumber, vector<stClient> &vClients)
+void deposiByAccountNumber(double amount, string accountNumber, vector<stClient> &vClients)
 {
 
     char performTransaction;
@@ -525,26 +530,6 @@ void deposit(double amount, string accountNumber, vector<stClient> &vClients)
             if (accountNumber == client.accountNumber)
             {
                 client.accountBalance += amount;
-                cout << "Done Successfully, new balance " << client.accountBalance << ".\n";
-                break;
-            }
-        }
-        saveClientsToFile(FILENAME, vClients);
-    }
-}
-
-void withDraw(double amount, string accountNumber, vector<stClient> &vClients)
-{
-    char performTransaction;
-    cout << "\n\n ARE YOU SURE YOU WANNA PERFORM THIS TRANSACITON? y/n ";
-    cin >> performTransaction;
-    if (toupper(performTransaction) == 'Y')
-    {
-        for (stClient &client : vClients)
-        {
-            if (accountNumber == client.accountNumber)
-            {
-                client.accountBalance -= amount;
                 cout << "Done Successfully, new balance " << client.accountBalance << ".\n";
                 break;
             }
@@ -572,7 +557,7 @@ void showDespositScreen()
     printClientCard(client);
 
     double amount = stod(MyInputLibrary::readString("Enter the deposit amount? "));
-    deposit(amount, accountNumber, vClients);
+    deposiByAccountNumber(amount, accountNumber, vClients);
 
     getBackToTransactionsScreen();
 }
@@ -586,6 +571,7 @@ void showWithdrawScreen()
     vector<stClient> vClients = loadClientDataFromFile(FILENAME);
     stClient client;
     string accountNumber = MyInputLibrary::readString("Enter The Account Number you wanna withdraw ");
+    // validate that the account number exsist
     while (!findClientByAccountNumber(accountNumber, client))
     {
         cout << "Client with [" << accountNumber << "] Does not exsists.\n";
@@ -600,13 +586,12 @@ void showWithdrawScreen()
     {
         amount = stod(MyInputLibrary::readString("Amount exceeds the balance, you can withdraw up to :  " + to_string(client.accountBalance) + "\nEnter valid amount "));
     }
-    withDraw(amount, accountNumber, vClients);
+    deposiByAccountNumber(amount * -1, accountNumber, vClients);
     getBackToTransactionsScreen();
 }
 
 void listTotalBalances()
 {
-
 }
 
 void switchingBetweenTransactionScreens(enTransactionsOptions option)
