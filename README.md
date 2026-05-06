@@ -1,10 +1,10 @@
 # Bank Management System
 
-A console-based bank management system built in C++ as part of Course 7. The program manages client records through a menu-driven interface, with all data persisted in a flat text file using a custom `#//#` delimiter format.
+A console-based bank management system built in C++ as part of Course 7. Manages client records and bank transactions through a menu-driven interface, with all data persisted in a flat text file using a custom `#//#` delimiter format.
 
 ---
 
-## Features
+## Main Menu
 
 | Option | Description |
 |--------|-------------|
@@ -13,13 +13,23 @@ A console-based bank management system built in C++ as part of Course 7. The pro
 | [3] Delete Client | Confirm and permanently remove a client record |
 | [4] Update Client | Overwrite a client's details and save changes |
 | [5] Find Client | Search by account number and view client card |
-| [6] Exit | Close the program |
+| [6] Transactions | Open the transactions menu |
+| [7] Exit | Close the program |
+
+## Transactions Menu
+
+| Option | Description |
+|--------|-------------|
+| [1] Deposit | Add funds to a client's account |
+| [2] Withdraw | Deduct funds with balance validation |
+| [3] Total Balances | View all accounts with a combined total |
+| [4] Main Menu | Return to the main menu |
 
 ---
 
 ## Client Record Structure
 
-Each record stores the following fields, serialized using `#//#` as a delimiter:
+Each record is serialized using `#//#` as a delimiter:
 
 ```
 AccountNumber #//# PinCode #//# Name #//# Phone #//# Balance
@@ -46,12 +56,6 @@ BankSystem/
 g++ main.cpp -o BankSystem
 ./BankSystem
 ```
-
----
-
-## Coming Soon — Transactions Menu
-
-The next version will introduce a dedicated transactions screen with **Deposit** and **Withdraw** operations, allowing real-time balance updates persisted directly to the file.
 
 ---
 
